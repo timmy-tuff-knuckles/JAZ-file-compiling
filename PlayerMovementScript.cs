@@ -1,10 +1,10 @@
 //PlayerMovementScript
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovementScript : MonoBehaviour
 {
     public float movespeed = 5f; // controlls how fast you move
 
-    private Rigidbody2D rb;
-    private Vector2 movement; 
+    public Rigidbody2D rb;
+    public Vector2 movement; 
 
     void Start()
     {
