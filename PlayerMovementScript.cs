@@ -46,24 +46,13 @@ public class PlayerMovement : MonoBehaviour
         //Gets horizontal velocity
         horizontal = Input.GetAxisRaw("Horizontal");
 
-        //Makes player jump if they are grounded
-        if (Input.GetKeyDown(KeyCode.W) && IsGrounded())
+        //Makes player jump if they are grounded - W or Up arrow
+        if (Input.GetKeyDown(KeyCode.W) && IsGrounded() || Input.GetKeyDown(KeyCode.UpArrow) && IsGrounded())
         {
             myRigidbody.linearVelocity = new Vector2(myRigidbody.linearVelocityX, jumpStrength);
         }
 
-        if (Input.GetKeyUp(KeyCode.W) && myRigidbody.linearVelocityY > 0f)
-        {
-            myRigidbody.linearVelocity = new Vector2(myRigidbody.linearVelocityX, myRigidbody.linearVelocityY * 0.5f);
-        }
-
-        //Makes player jump (up arrow version)
-        if (Input.GetKeyDown(KeyCode.UpArrow) && IsGrounded())
-        {
-            myRigidbody.linearVelocity = new Vector2(myRigidbody.linearVelocityX, jumpStrength);
-        }
-
-        if (Input.GetKeyUp(KeyCode.UpArrow) && myRigidbody.linearVelocityY > 0f)
+        if (Input.GetKeyUp(KeyCode.W) && myRigidbody.linearVelocityY > 0f || Input.GetKeyUp(KeyCode.UpArrow) && myRigidbody.linearVelocityY > 0f)
         {
             myRigidbody.linearVelocity = new Vector2(myRigidbody.linearVelocityX, myRigidbody.linearVelocityY * 0.5f);
         }
@@ -74,11 +63,8 @@ public class PlayerMovement : MonoBehaviour
             StartCoroutine(Dash());
         }
 
-
         Flip();
-
     }
-
 
     private void FixedUpdate()
     {
@@ -108,8 +94,8 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-        //Dash functions
-       private IEnumerator Dash()
+    //Dash functions
+    private IEnumerator Dash()
     {
         canDash = false;
         isDashing = true;
@@ -124,5 +110,4 @@ public class PlayerMovement : MonoBehaviour
         yield return new WaitForSeconds(dashingCooldown);
         canDash = true;
     }
-
 }
