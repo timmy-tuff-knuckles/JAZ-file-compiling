@@ -7,7 +7,7 @@ public class Bullet : MonoBehaviour
     [SerializeField] private float normalBulletSpeed = 15f;
     private Rigidbody2D rb; 
 
-    private void start()
+    private void Start()
     {
         rb = GetComponent<Rigidbody2D>(); 
 
@@ -19,5 +19,3 @@ private void SetStraightVelocity()
         rb.linearVelocity = transform.right * normalBulletSpeed;
     }
 }
-
- 
