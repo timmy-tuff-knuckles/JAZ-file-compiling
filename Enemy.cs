@@ -1,9 +1,11 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [RequireComponent(typeof(BoxCollider2D))]
 public class Enemy : MonoBehaviour
 {
+    [SerializeField] private LayerMask playerLayerMask; 
     //Reference to needed locations
     public List<Transform> points;
     //Interger value for the next point index
@@ -12,6 +14,13 @@ public class Enemy : MonoBehaviour
     private int idValueChange = 1;
     //Speed of movement
     public float enemySpeed;
+    public Transform DetectPlayer;
+    public GameObject playerHitbox;
+
+    private void Start()
+    {
+        playerHitbox = GameObject.Find("Brit Boi");
+    }
 
     private void Reset()
     {
@@ -58,10 +67,22 @@ public class Enemy : MonoBehaviour
         points.Add(p2.transform);
 
     }
-
+    
+    
     private void Update()
     {
-        MoveToNextPoint();
+        bool isTouching = Physics2D.OverlapBox(transform.position, transform.localScale, transform.rotation.eulerAngles.z, playerLayerMask) != null;
+
+        if (isTouching)
+        {
+            
+            transform.position = Vector3.MoveTowards(transform.position, playerHitbox.transform.position, enemySpeed * Time.deltaTime);
+        }
+        else
+        {
+            MoveToNextPoint(); 
+        }
+         
     }
 
     void MoveToNextPoint()
@@ -101,5 +122,7 @@ public class Enemy : MonoBehaviour
             nextID += idValueChange;
 
         }
+
     }
+
 }
