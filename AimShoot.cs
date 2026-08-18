@@ -41,7 +41,7 @@ public class AimShoot : MonoBehaviour
         }
 
         gun.transform.localScale = localScale; 
-
+   
 
     }
 
