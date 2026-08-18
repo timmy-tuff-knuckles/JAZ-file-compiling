@@ -6,7 +6,8 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     [SerializeField] private LayerMask playerLayerMask; 
-    //Reference to needed locations
+    [SerializeField] private float detectionRadius = 3f;
+    //Reference to needed locations 
     public List<Transform> points;
     //Interger value for the next point index
     public int nextID = 0;
@@ -15,11 +16,38 @@ public class Enemy : MonoBehaviour
     //Speed of movement
     public float enemySpeed;
     public Transform DetectPlayer;
-    public GameObject playerHitbox;
+    public Transform playerHitbox;
+    private float IsPlayerInRange;
+    private float baseScaleX;
+    private float baseScaleY;
+
+    bool isPlayerInRange()
+    {
+        return Physics2D.OverlapCircle(transform.position, detectionRadius, playerLayerMask) != null;
+    }
 
     private void Start()
     {
-        playerHitbox = GameObject.Find("Brit Boi");
+        baseScaleX = Mathf.Abs(transform.localScale.x);
+        baseScaleY = Mathf.Abs(transform.localScale.y);
+    }
+
+    private void Update()
+    {
+        bool isTouching = isPlayerInRange(); 
+
+        if (isTouching)
+        {
+            if (playerHitbox != null)
+            {
+                FaceTarget(playerHitbox.position);
+                transform.position = Vector2.MoveTowards(transform.position,new Vector2(playerHitbox.position.x, transform.position.y),enemySpeed * Time.deltaTime);
+            }
+        }
+        else
+        {
+            MoveToNextPoint(); 
+        }   
     }
 
     private void Reset()
@@ -45,8 +73,6 @@ public class Enemy : MonoBehaviour
         GameObject waypoints = new GameObject("Waypoints");
         waypoints.transform.position = root.transform.position; //Root.transform.position makes the position (0,0) locally not globaly - In relation to the enemy
 
-        //Reset waypoints position to root
-
         //Make waypoints object child of root
         waypoints.transform.SetParent(root.transform);
 
@@ -65,24 +91,6 @@ public class Enemy : MonoBehaviour
         points = new List<Transform>();
         points.Add(p1.transform);
         points.Add(p2.transform);
-
-    }
-    
-    
-    private void Update()
-    {
-        bool isTouching = Physics2D.OverlapBox(transform.position, transform.localScale, transform.rotation.eulerAngles.z, playerLayerMask) != null;
-
-        if (isTouching)
-        {
-            
-            transform.position = Vector3.MoveTowards(transform.position, playerHitbox.transform.position, enemySpeed * Time.deltaTime);
-        }
-        else
-        {
-            MoveToNextPoint(); 
-        }
-         
     }
 
     void MoveToNextPoint()
@@ -100,19 +108,19 @@ public class Enemy : MonoBehaviour
                 transform.localScale = new Vector3(6,6,1);
             }
 
-        //Move the enemy towards the next point
-        transform.position = Vector2.MoveTowards(transform.position, nextPoint.position, enemySpeed * Time.deltaTime); 
+        //Move the enemy towards the next point - Locks it to y position only
+        transform.position = Vector2.MoveTowards(transform.position, new Vector2(nextPoint.position.x, transform.position.y), enemySpeed * Time.deltaTime);
 
         //Check the distance between enemy and next point to trigger the point
         if(Vector2.Distance(transform.position, nextPoint.position)<1f)
         {
-            //Check if we are at the end of the line (make change -1)
+            //Check if enemy is at the end of the line (make change -1)
             if(nextID == points.Count - 1)
             {
                 idValueChange = -1;
             }
 
-            //Check if we are not at the end of the line (make change +1)
+            //Check if enemy is not at the end of the line (make change +1)
             if(nextID == 0)
             {
                 idValueChange = 1;
@@ -120,9 +128,19 @@ public class Enemy : MonoBehaviour
 
             //Apply the change on the nextID
             nextID += idValueChange;
-
         }
 
     }
 
+    void FaceTarget(Vector3 playerPosition)
+    {
+        float direction = playerPosition.x > transform.position.x ? -1f : 1f;
+        transform.localScale = new Vector3(baseScaleX * direction, baseScaleY, transform.localScale.z);
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, detectionRadius);
+    }
 }
