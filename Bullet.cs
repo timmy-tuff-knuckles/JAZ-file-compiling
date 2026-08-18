@@ -7,40 +7,17 @@ public class Bullet : MonoBehaviour
     [SerializeField] private float normalBulletSpeed = 15f;
     [SerializeField] private float destroyTime = 3f; 
     [SerializeField] private LayerMask whatDestroysBullet; 
-    [SerializeField] private float normalBulletDamage = 1f;  
-    [SerializeField] private float physicsBulletSpeed = 17.5f; 
-    private Rigidbody2D rb; 
 
-    public enum BulletType
-    {
-        Normal,
-        Physics
-    }
-    public BulletType bulletType; 
-    private float damage;   
+    private Rigidbody2D rb; 
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>(); 
 
         SetDestroyTime(); 
         
-        //set velocity based on bullet type
-
-        InitializeBulletStats();
-
-
+        SetStraightVelocity(); 
     }
      
-
-    private void InitializeBulletStats()
-    {
-        if(bulletType == BulletType.Normal)
-        {
-            SetStraightVelocity();
-        }
-
-        else if (bulletType == BulletType.Physics);
-    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -54,12 +31,9 @@ public class Bullet : MonoBehaviour
             //screenShake
 
             //Damage Enemy
-            IDdamagable idDamagable = collision.gameObject.GetComponent<IDDamagable>(); 
-            if (idDamagable != null)
-            {
-                //damage enemy
-                idDamagable.Damage(damage);
-            }
+
+            //damage enemy
+               
             //Destroy the bullet
             Destroy(gameObject); 
         }
