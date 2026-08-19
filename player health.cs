@@ -1,22 +1,59 @@
-// player healht
+//player health
 using system.collections;
 using system.collections.generic;
-using unityengine;
-using unityengine.UI;
+using UnityEngine;
+using UnityEngine.UI;
 
-public class healthbar : monobehaviour
+
+
+
+
+public class PlayerHealth : MonoBehaviour
 {
-    
-    public slider slider;
+    public int maxHealth = 100;
+    public int currentHealth;
 
-    public void setmaxhealth(int health)
+    public Healthbar healthbar;
+
+    void Start()
     {
-        slider.maxvalue = health;
-        slider.value = health;
+        currentHealth = maxHealth;
+
+        healthbar.SetMaxHealth(maxHealth);
     }
 
-    public void sethealth(int health)
+    public void TakeDamage(int damage)
     {
-        slider.value = health;
+        currentHealth -= damage;
+
+        // Prevent health going below 0
+        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+
+        // Update the health bar
+        healthbar.SetHealth(currentHealth);
+
+        if (currentHealth <= 0)
+        {
+            Die();
+        }
+    }
+
+    public void Heal(int amount)
+    {
+        currentHealth += amount;
+
+        // Prevent health going above max health
+        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+
+        healthbar.SetHealth(currentHealth);
+    }
+
+    void Die()
+    {
+        Debug.Log("Player died!");
+
+        // Put your death code here
+        // Example:
+        // Destroy(gameObject);
     }
 }
