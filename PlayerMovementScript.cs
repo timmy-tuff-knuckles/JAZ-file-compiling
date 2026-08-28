@@ -13,16 +13,14 @@ public class PlayerMovement : MonoBehaviour
     //refrences the trail renderer in unity - this gives us access to manage the dash visual effects
     [SerializeField] private TrailRenderer tr;  
 
-    //Floats and Variables used in this script
-
     //horizontal gets the left/right velocity of player
-    private float horizontal;
+    public float horizontal;
     //jump height - because it is a public float I can edit in unity instead of opening code editor
     public float jumpStrength;
     //speed of left/right movement
     public float moveSpeed;
     //tells us which way the sprite is facing - true if right, false if left
-    private bool isFacingRight = true;
+    public bool isFacingRight = true;
     //this lets us know if the dash option is available - there is a cooldown
     private bool canDash = true;
     //lets us know if the player is currently dashing
@@ -33,6 +31,8 @@ public class PlayerMovement : MonoBehaviour
     public float dashingPower = 24f;
     //how long until next dash
     private float dashingCooldown = 1f;
+
+    
 
     // Update is called once per every frame
     void Update()
@@ -73,6 +73,7 @@ public class PlayerMovement : MonoBehaviour
             return;
         }
 
+        //moves the player horizontaly when they click A, D, or <, >
         myRigidbody.linearVelocity = new Vector2(horizontal * moveSpeed, myRigidbody.linearVelocityY);
     }
 
@@ -83,7 +84,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
     //checks if player is moving a direction then flips the model in that direction
-    private void Flip()
+    public void Flip()
     {
         if (isFacingRight && horizontal < 0f || !isFacingRight && horizontal > 0f)
         {
@@ -95,7 +96,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
     //Dash functions
-    private IEnumerator Dash()
+    private IEnumerator Dash() // Dash function
     {
         canDash = false;
         isDashing = true;

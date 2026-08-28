@@ -3,25 +3,30 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
+    void Start()
+    {
+        // Set the target frame rate to 60 FPS which reduces frame drops and improves performance on lower end devices
+        Application.targetFrameRate = 60;
+    }
+    
     public void PlayGame()
     {   
-        //loads scene 1 - level 1
-        SceneManager.LoadSceneAsync(2);
+        //loads scene 5 - level 1
+        SceneManager.LoadSceneAsync(5);
     }
 
     public void controls()
     {
-        //Loads scene 10 - which is the control screen
-        SceneManager.LoadSceneAsync(1);
+        //Loads scene 2 - which is the controls screen
+        SceneManager.LoadSceneAsync(2);
     }
 
     public void back()
     {
-        //Loads scene 0 - which is the main menu
-        SceneManager.LoadSceneAsync(0);
+        //Loads scene 1 - which is the main menu
+        SceneManager.LoadSceneAsync(1);
     }
 
-    // Update is called once per frame
     public void QuitGame()
     {
         // Quits application - only works if built does not work in unity editor

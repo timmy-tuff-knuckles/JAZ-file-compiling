@@ -5,18 +5,20 @@ using UnityEngine.InputSystem;
 
 public class AimShoot : MonoBehaviour
 {
-    [SerializeField] public GameObject gun;
-    [SerializeField] public GameObject bullet; 
-    [SerializeField] private Transform bulletSpawnPoint; 
-    private GameObject bulletInst; 
-    private Vector2 worldPosition; 
-    private Vector2 direction; 
-    private float angle; 
+    [SerializeField] public GameObject gun; // The gun object that will be rotated to aim at the mouse
+    [SerializeField] public GameObject bullet; // The bullet prefab to be instantiated
+    [SerializeField] private Transform bulletSpawnPoint; // The point from which the bullet will be spawned
+    private GameObject bulletInst; // Reference to the instantiated bullet
+    private Vector2 worldPosition; //World position of the mouse in world space
+    private Vector2 direction; //Direction in world space for the gun to aim at
+    private float angle; //Angle in world space for the gun to aim at
+    public float bulletReload = 3f; // Time in seconds between shots
 
     private void Update()
     {
         HandleGunRotation();
         HandleGunShooting(); 
+        bulletReload -= Time.deltaTime; // Decrease the reload timer by 1 every second
     }
 
     private void HandleGunRotation()
@@ -31,17 +33,20 @@ public class AimShoot : MonoBehaviour
         float localAngle = Mathf.Atan2(localDir.y, localDir.x) * Mathf.Rad2Deg;
         gun.transform.localRotation = Quaternion.Euler(0f, 0f, localAngle);
 
+        // Flip the gun vertically if the angle is greater than 90 degrees or less than -90 degrees
         Vector3 localScale = new Vector3(0.45f, Mathf.Abs(localAngle) > 90f ? -0.45f : 0.45f, 2f);
-        gun.transform.localScale = localScale;
+        gun.transform.localScale = localScale; 
     }
 
-    private void HandleGunShooting()
+    private void HandleGunShooting() // Handles shooting bullets when the left mouse button is pressed and the reload timer has elapsed
     {
-        if (Mouse.current.leftButton.wasPressedThisFrame)
+        if (Mouse.current.leftButton.wasPressedThisFrame && bulletReload <=0f)
         {
             // Use the world-space aim angle(Quaternion) to fix the bullet's rotation so it flies in the correct direction
             Quaternion bulletRotation = Quaternion.Euler(0f, 0f, angle);
             bulletInst = Instantiate(bullet, bulletSpawnPoint.position, bulletRotation);
+            bulletReload = 3f; // Reset the reload timer
         }
+    
     }
 }

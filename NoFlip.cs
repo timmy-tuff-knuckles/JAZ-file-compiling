@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class NoFlip : MonoBehaviour
 {
-    private Transform mainCameraTransform;
-    private Vector3 originalLocalScale;
+    private Transform mainCameraTransform; // Reference to the main camera's transform
+    private Vector3 originalLocalScale; // Store the original local scale of the object
 
     void Start()
     {

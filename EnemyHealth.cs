@@ -5,17 +5,18 @@ using UnityEngine.UI;
 
 public class EnemyHealth : MonoBehaviour
 {
-    public int maxHealth = 100;
-    private int currentHealth;
-    public Slider enemyHealthBar;
-    [SerializeField] public LayerMask bulletLayerMask;
-    public int damageAmount = 10;
+    public int maxHealth = 100; // Maximum health of the enemy
+    private int currentHealth; // Current health of the enemy
+    public Slider enemyHealthBar; // Reference to the UI Slider that represents the enemy's health bar
+    [SerializeField] public LayerMask bulletLayerMask; // LayerMask to determine what can damage the enemy
+    public int damageAmount = 10; // Amount of damage the enemy takes when hit by a bullet
     
     void Start()
     {
+        gameObject.SetActive(true); // Ensure the enemy is active at the start
         currentHealth = maxHealth;
-        enemyHealthBar.maxValue = maxHealth;
-        enemyHealthBar.value = currentHealth;
+        enemyHealthBar.maxValue = maxHealth; //Set the max value of the health bar to the max health
+        enemyHealthBar.value = currentHealth; //Set the current value of the health bar to the current health
     }
     
     void OnTriggerEnter2D(Collider2D other)
@@ -28,19 +29,20 @@ public class EnemyHealth : MonoBehaviour
         }
     }
 
-    public void TakeDamage()
+    public void TakeDamage() // Checks if the enemy can take damage and applies the damage to the enemy's health
     {
         currentHealth -= damageAmount;
         enemyHealthBar.value = currentHealth;
         if (currentHealth <= 0)
         {
-            die();
+            StartCoroutine(die());
         }
     }
 
-    void die()
+    public IEnumerator die()
     {
-        Destroy(gameObject);
+        yield return new WaitForSeconds(0.5f); // Wait for 0.5 seconds before disabling the enemy
+        gameObject.SetActive(false); // Disable the enemy game object
     }
 }
 

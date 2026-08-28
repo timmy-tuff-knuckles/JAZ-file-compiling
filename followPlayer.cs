@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    [SerializeField] private Transform target; // Drag your player here
+    [SerializeField] private Transform target; // The target the camera will follow
     [SerializeField] private float smoothTime = 0.3f; // Delay time to catch up
     [SerializeField] private Vector3 offset = new Vector3(0f, 0f, -10f); // Keep camera at Z = -10
 
