@@ -1,5 +1,5 @@
 using UnityEngine;
-using Pathfinding;
+using Pathfinding; // Import 'Pathfinding' namespace for detection
 
 public class PonaturiAI : MonoBehaviour
 {
@@ -39,7 +39,7 @@ public class PonaturiAI : MonoBehaviour
             PathFollow();
         }
 
-        //Reduces the jump time every frame
+        // Reduces the jump time every frame
         jumpTime = jumpTime - Time.deltaTime;
     }
 
@@ -47,7 +47,7 @@ public class PonaturiAI : MonoBehaviour
     {
         if (followEnabled && seeker.IsDone())
         {
-            //Uses seeker to find a path from the enemy to the player
+            // Uses seeker to find a path from the enemy to the player
             seeker.StartPath(myRigidbody.position, target.position, OnPathComplete);
         }
     }
@@ -64,7 +64,7 @@ public class PonaturiAI : MonoBehaviour
             return;
         }
 
-        //Checks if the enemy is grounded
+        // Checks if the enemy is grounded
         isGrounded = Physics2D.Raycast(transform.position, -Vector2.up, GetComponent<Collider2D>().bounds.extents.y + jumpCheckOffset); 
 
         Vector2 direction = ((Vector2)path.vectorPath[currentWaypoint] - myRigidbody.position).normalized;
@@ -79,12 +79,12 @@ public class PonaturiAI : MonoBehaviour
             }
         }
 
-        myRigidbody.AddForce(force); // Apply the force to the enemy's Rigidbody2D
+        myRigidbody.AddForce(force); // Apply force to the enemy's Rigidbody2D
 
         float distance = Vector2.Distance(myRigidbody.position, path.vectorPath[currentWaypoint]);
         if (distance < nextWaypointDistance)
         {
-            currentWaypoint++;
+            currentWaypoint++; // Move to the next waypoint in the path
             return;
         }
 

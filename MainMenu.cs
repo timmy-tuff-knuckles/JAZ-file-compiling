@@ -11,19 +11,19 @@ public class MainMenu : MonoBehaviour
     
     public void PlayGame()
     {   
-        //loads scene 5 - level 1
+        // loads scene 5 - level 1
         SceneManager.LoadSceneAsync(5);
     }
 
     public void controls()
     {
-        //Loads scene 2 - which is the controls screen
+        // Loads scene 2 - which is the controls screen
         SceneManager.LoadSceneAsync(2);
     }
 
     public void back()
     {
-        //Loads scene 1 - which is the main menu
+        // Loads scene 1 - which is the main menu
         SceneManager.LoadSceneAsync(1);
     }
 

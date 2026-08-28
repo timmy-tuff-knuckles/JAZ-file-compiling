@@ -22,7 +22,7 @@ public class NoFlip : MonoBehaviour
             transform.LookAt(transform.position + mainCameraTransform.forward);
         }
 
-        // Counteract any negative scale inherited from a flipped parent
+        // Counteract any negative scale inherited from the flipped parent 
         if (transform.parent != null)
         {
             Vector3 parentScale = transform.parent.lossyScale;

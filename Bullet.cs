@@ -8,10 +8,11 @@ public class Bullet : MonoBehaviour
     [SerializeField] private float destroyTime = 3f;  // Time in seconds before the bullet is destroyed automatically
     [SerializeField] private LayerMask whatDestroysBullet; // LayerMask to determine what can destroy the bullet 
 
-    private Rigidbody2D rb; // Reference to the Rigidbody2D component of the bullet
+    private Rigidbody2D myRigidbody; // Reference to the Rigidbody2D component of the bullet
+    
     private void Start()
     {
-        rb = GetComponent<Rigidbody2D>(); 
+        myRigidbody = GetComponent<Rigidbody2D>(); 
 
         SetDestroyTime(); 
         
@@ -31,7 +32,7 @@ public class Bullet : MonoBehaviour
 
     private void SetStraightVelocity() // Sets the velocity of the bullet to move straight in the direction it is facing
     {
-        rb.linearVelocity = transform.right * normalBulletSpeed;
+        myRigidbody.linearVelocity = transform.right * normalBulletSpeed;
     }
 
     private void SetDestroyTime() // Sets the time before the bullet is destroyed automatically
