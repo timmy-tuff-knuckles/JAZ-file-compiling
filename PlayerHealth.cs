@@ -6,6 +6,7 @@ public class PlayerHealth : MonoBehaviour
 {
     [SerializeField] public LayerMask enemyLayerMask; // LayerMask to determine what can damage the player
     [SerializeField] public LayerMask voidLayerMask; // LayerMask to determine what can cause void damage
+    [SerializeField] public LayerMask nextLevelLayerMask; // LayerMask to determine what can cause level change
     public Slider healthSlider; // Reference to the UI Slider that represents the player's health bar
     public int currentHealth; // Current health of the player
     private int maxHealth = 100; // Maximum health of the player
@@ -16,12 +17,17 @@ public class PlayerHealth : MonoBehaviour
     // Checks if the player is touching an enemy by checking for a collision with the damging layers
     bool isEnemyTouching()
     {
-        return Physics2D.OverlapCircle(transform.position, 1.5f, enemyLayerMask) != null;
+        return Physics2D.OverlapCircle(transform.position, 2.5f, enemyLayerMask) != null;
     }
 
     bool isVoidTouching()
     {
         return Physics2D.OverlapCircle(transform.position, 1.5f, voidLayerMask) != null;
+    }
+
+    bool isLevelChangeTouching()
+    {
+        return Physics2D.OverlapCircle(transform.position, 1.5f, nextLevelLayerMask) != null;
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -43,6 +49,7 @@ public class PlayerHealth : MonoBehaviour
         {
             TakeDamage();
             VoidDamage();
+            ChangeLevel();
         }
     }
     
@@ -68,6 +75,7 @@ public class PlayerHealth : MonoBehaviour
             waitTime = 0.25f; // Reset the wait time to 0.25 seconds after taking damage
         }
     }
+
     public void TakeDamage()
     {
         bool isTouching = isEnemyTouching();
@@ -83,6 +91,17 @@ public class PlayerHealth : MonoBehaviour
             }
 
             waitTime = 1; // Reset the wait time to 1 second after taking damage
+        }
+    }
+
+    public void ChangeLevel()
+    {
+        bool isTouching = isLevelChangeTouching();
+
+        if (isTouching)
+        {
+            int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+            SceneManager.LoadScene(currentSceneIndex + 1);
         }
     }
 }
