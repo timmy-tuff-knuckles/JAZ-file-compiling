@@ -6,11 +6,11 @@ using UnityEngine.UI;
 public class ScoreManager : MonoBehaviour
 {
     public static ScoreManager instance; 
-    public Text scoreText; 
-    public Text highscoreText;
+    public Text ScoreText; 
+    public Text HighscoreText;
 
-    int score = 0; 
-    int highscore = 0; 
+    int Score = 0; 
+    int Highscore = 0; 
      
     private void Awake()
     {
@@ -20,13 +20,19 @@ public class ScoreManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        scoreText.text = score.ToString() + " POINTS";
-        highscoreText.text = " HIGHSCORE:" + highscore.ToString();
+        Highscore = PlayerPrefs.GetInt("Highscore", 0);
+        ScoreText.text =  "Score: " + Score.ToString() ;
+        HighscoreText.text = "Highscore: " + Highscore.ToString();
     } 
 
   public void AddPoint(int pointValue)
     {
-        score = score + pointValue;
-        scoreText.text = score.ToString();
+        Score = Score + pointValue;
+        ScoreText.text = "Score: " + Score.ToString();
+        if (Score > Highscore)
+        {
+            PlayerPrefs.SetInt("Highscore", Score);
+        }
+        
     }
 }

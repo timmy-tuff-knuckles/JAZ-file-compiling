@@ -10,13 +10,14 @@ public class EnemyHealth : MonoBehaviour
     public Slider enemyHealthBar; // Reference to the UI Slider that represents the enemy's health bar
     [SerializeField] public LayerMask bulletLayerMask; // LayerMask to determine what can damage the enemy
     public int damageAmount = 10; // Amount of damage the enemy takes when hit by a bullet
+    public int points; // Points awarded to the player when the enemy is defeated
     
     void Start()
     {
         gameObject.SetActive(true); // Ensure the enemy is active at the start
         currentHealth = maxHealth;
-        enemyHealthBar.maxValue = maxHealth; //Set the max value of the health bar to the max health
-        enemyHealthBar.value = currentHealth; //Set the current value of the health bar to the current health
+        enemyHealthBar.maxValue = maxHealth; // Set the max value of the health bar to the max health
+        enemyHealthBar.value = currentHealth; // Set the current value of the health bar to the current health
     }
     
     void OnTriggerEnter2D(Collider2D other)
@@ -41,8 +42,9 @@ public class EnemyHealth : MonoBehaviour
 
     public IEnumerator die()
     {
-        yield return new WaitForSeconds(0.5f); // Wait for 0.5 seconds before disabling the enemy
+        yield return new WaitForSeconds(0.2f); // Wait for 0.2 seconds before disabling the enemy
         gameObject.SetActive(false); // Disable the enemy game object
+        ScoreManager.instance.AddPoint(points); // Add points to the player's score when the enemy is defeated
     }
 }
 
