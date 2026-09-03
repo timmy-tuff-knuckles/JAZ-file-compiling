@@ -17,7 +17,7 @@ public class PlayerHealth : MonoBehaviour
     // Checks if the player is touching an enemy by checking for a collision with the damging layers
     bool isEnemyTouching()
     {
-        return Physics2D.OverlapCircle(transform.position, 2.5f, enemyLayerMask) != null;
+        return Physics2D.OverlapCircle(transform.position, 3f, enemyLayerMask) != null;
     }
 
     bool isVoidTouching()
@@ -55,7 +55,7 @@ public class PlayerHealth : MonoBehaviour
     
     public void die() // Loads the death screen 
     {
-        SceneManager.LoadScene(4);
+        SceneManager.LoadScene(3); // Load the death screen scene
     }
 
     public void VoidDamage()
@@ -97,6 +97,7 @@ public class PlayerHealth : MonoBehaviour
     public void ChangeLevel()
     {
         bool isTouching = isLevelChangeTouching();
+        
 
         if (isTouching)
         {

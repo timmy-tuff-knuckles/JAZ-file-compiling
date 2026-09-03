@@ -14,18 +14,18 @@ public class Bullet : MonoBehaviour
     {
         myRigidbody = GetComponent<Rigidbody2D>(); 
 
-        SetDestroyTime(); 
+        SetDestroyTime(); // Set the time before the bullet is destroyed automatically
         
-        SetStraightVelocity(); 
+        SetStraightVelocity(); // Set the velocity of the bullet to move straight in the direction it is facing
     }
      
 
     private void OnTriggerEnter2D(Collider2D collision) // Called when the bullet collides with another collider
     {
-        //This is the collision 
+        // This is the collision 
         if((whatDestroysBullet.value & (1 << collision.gameObject.layer)) > 0 )
         {               
-            //Destroy the bullet
+            // Destroy the bullet
             Destroy(gameObject); 
         }
     }

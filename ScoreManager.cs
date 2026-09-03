@@ -6,13 +6,14 @@ using UnityEngine.UI;
 public class ScoreManager : MonoBehaviour
 {
     public static ScoreManager instance; 
-    public Text ScoreText; 
-    public Text HighscoreText;
+    public Text ScoreText; // Reference to the UI Text component that displays the player's score
+    public Text HighscoreText; // Reference to the UI Text component that displays the player's highscore
 
     int Score = 0; 
     int Highscore = 0; 
-     
-    private void Awake()
+
+
+    private void Awake() // Awake is called when the script instance is being loaded
     {
         instance = this; 
     }
@@ -25,7 +26,7 @@ public class ScoreManager : MonoBehaviour
         HighscoreText.text = "Highscore: " + Highscore.ToString();
     } 
 
-  public void AddPoint(int pointValue)
+    public void AddPoint(int pointValue) // Adds points to the player's score and updates the score and highscore UI text
     {
         Score = Score + pointValue;
         ScoreText.text = "Score: " + Score.ToString();
